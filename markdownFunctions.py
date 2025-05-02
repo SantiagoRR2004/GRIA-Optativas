@@ -1,5 +1,6 @@
 from typing import List, Dict
 
+
 def markdownTable(data: Dict[str, List[object]]) -> str:
     """
     Convert a dictionary to a markdown table.
@@ -21,7 +22,10 @@ def markdownTable(data: Dict[str, List[object]]) -> str:
     rows = []
 
     # Create the header row
-    header = " ".join([f"| <img width=\"1000\"><br><p align=\"center\">{key} " for key in keys]) + "|"
+    header = (
+        " ".join([f'| <img width="1000"><br><p align="center">{key} ' for key in keys])
+        + "|"
+    )
     rows.append(header)
 
     n = len(keys)
@@ -42,4 +46,3 @@ def markdownTable(data: Dict[str, List[object]]) -> str:
         rows.append(data_row)
 
     return "\n".join(rows)
-
