@@ -1,4 +1,5 @@
 from typing import List, Dict
+import os
 
 
 def markdownTable(data: Dict[str, List[object]]) -> str:
@@ -46,3 +47,28 @@ def markdownTable(data: Dict[str, List[object]]) -> str:
         rows.append(data_row)
 
     return "\n".join(rows)
+
+
+def loadMarkdownParts() -> Dict[str, str]:
+    """
+    Load markdown parts from the folder markdownParts.
+
+    Args:
+        None
+
+    Returns:
+        - dict: A dictionary with the markdown parts.
+            The keys are the filenames without the .md extension.
+            The values are the contents of the files.
+    """
+    currentDirectory = os.path.dirname(os.path.abspath(__file__))
+    markdownPartsPath = os.path.join(currentDirectory, "markdownParts")
+
+    toret = {}
+
+    for filename in os.listdir(markdownPartsPath):
+        if filename.endswith(".md"):
+            with open(os.path.join(markdownPartsPath, filename), "r") as f:
+                toret[filename[:-3]] = f.read()
+
+    return toret
