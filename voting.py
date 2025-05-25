@@ -30,17 +30,8 @@ def schulze(data: pd.DataFrame) -> Dict[str, List]:
                     data[[subjects[i], subjects[j]]].notna().all(axis=1).sum()
                 )
 
-    # Step 2: Compute strongest paths using Floyd-Warshall
-    strength = pairwise.copy()
-
-    for i in subjects:
-        for j in subjects:
-            if i != j:
-                for k in subjects:
-                    if i != k and j != k:
-                        strength.at[j, k] = max(
-                            strength.at[j, k], min(strength.at[j, i], strength.at[i, k])
-                        )
+    # Step 2: Compute strongest paths
+    strength = strongestPath(pairwise)
 
     # Step 3: Identify the order of subjects
     # TODO: Use topological sorting
@@ -93,3 +84,30 @@ def pairwisePreferences(data: pd.DataFrame) -> pd.DataFrame:
                 pairwise.iloc[i, j] = data[options[i]].gt(data[options[j]]).sum()
 
     return pairwise
+
+
+def strongestPath(data: pd.DataFrame) -> pd.DataFrame:
+    """
+    Compute the strongest path between each pair of options in a DataFrame.
+    The Floyd-Warshall algorithm is used to find the strongest paths and
+    higher values indicate stronger preferences.
+
+    Args:
+        - data (pd.DataFrame): DataFrame containing pairwise preferences.
+
+    Returns:
+        - pd.DataFrame: A DataFrame containing the strongest paths.
+    """
+    options = data.columns.tolist()
+    strength = data.copy()
+
+    for i in options:
+        for j in options:
+            if i != j:
+                for k in options:
+                    if i != k and j != k:
+                        strength.at[j, k] = max(
+                            strength.at[j, k], min(strength.at[j, i], strength.at[i, k])
+                        )
+
+    return strength
