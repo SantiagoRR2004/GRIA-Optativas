@@ -20,13 +20,7 @@ def schulze(data: pd.DataFrame) -> Dict[str, List]:
     subjects = data.columns.tolist()
 
     # Step 1: Compute pairwise preferences
-    pairwise = pd.DataFrame(index=subjects, columns=subjects)
-    for i in range(len(subjects)):
-        for j in range(len(subjects)):
-            if i == j:
-                pairwise.iloc[i, j] = 0
-            else:
-                pairwise.iloc[i, j] = data[subjects[i]].gt(data[subjects[j]]).sum()
+    pairwise = pairwisePreferences(data)
 
     # Divide by the number of people that took both subjects
     for i in range(len(subjects)):
@@ -72,3 +66,30 @@ def schulze(data: pd.DataFrame) -> Dict[str, List]:
     return {
         "Asignatura": ranking_df["Subject"].tolist(),
     }
+
+
+def pairwisePreferences(data: pd.DataFrame) -> pd.DataFrame:
+    """
+    Compute pairwise preferences from a DataFrame of values.
+
+    For (row, column) in the DataFrame, the value represents the number of
+    voters who prefer the option in the row over the option in the column.
+
+    Args:
+        - data (pd.DataFrame): DataFrame containing grades for different subjects.
+            Each column represents an option, and each row represents a voter.
+
+    Returns:
+        - pd.DataFrame: A DataFrame containing pairwise preferences.
+    """
+    options = data.columns.tolist()
+    pairwise = pd.DataFrame(index=options, columns=options)
+
+    for i in range(len(options)):
+        for j in range(len(options)):
+            if i == j:
+                pairwise.iloc[i, j] = 0
+            else:
+                pairwise.iloc[i, j] = data[options[i]].gt(data[options[j]]).sum()
+
+    return pairwise
