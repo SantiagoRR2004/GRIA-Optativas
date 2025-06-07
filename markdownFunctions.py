@@ -46,7 +46,7 @@ def markdownTable(data: Dict[str, List[object]]) -> str:
         dataRows.append(data_row)
         rows.append(data_row)
 
-    return "\n".join(rows)
+    return "\n".join(rows) + "\n"
 
 
 def loadMarkdownParts() -> Dict[str, str]:
