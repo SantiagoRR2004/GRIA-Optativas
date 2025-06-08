@@ -46,5 +46,7 @@ def createProbabilityDistributionPlot(df: pd.DataFrame) -> None:
     plt.legend()
     plt.xlabel("Nota")
     plt.ylabel("Densidad de probabilidad")
-    plt.savefig(os.path.join(imagesDirectory, "distributions.png"), dpi=300)
+    plt.savefig(
+        os.path.join(imagesDirectory, "distributions.png"), dpi=300, bbox_inches="tight"
+    )
     plt.close()
