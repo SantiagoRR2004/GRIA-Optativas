@@ -57,7 +57,7 @@ if __name__ == "__main__":
         "Mínimo": [format_number(x) for x in min.values.tolist()],
     }
 
-    mainMarkdown.append(premade["average"])
+    mainMarkdown.append(premade["statistics"])
     mainMarkdown.append(markdownFunctions.markdownTable(averagesDict))
 
     # Schulze method
