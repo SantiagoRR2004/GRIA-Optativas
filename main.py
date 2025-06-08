@@ -1,5 +1,6 @@
 import pandas as pd
 import markdownFunctions
+import plotting
 import voting
 
 
@@ -62,6 +63,10 @@ if __name__ == "__main__":
 
     mainMarkdown.append(premade["statistics"])
     mainMarkdown.append(markdownFunctions.markdownTable(averagesDict))
+
+    # Probability distribution plot
+    plotting.createProbabilityDistributionPlot(df)
+    mainMarkdown.append(premade["distributions"])
 
     # Schulze method
     mainMarkdown.append(premade["schulze"])
