@@ -46,6 +46,8 @@ if __name__ == "__main__":
     # Minimum
     min = df.min().round(2)
     min = min[averages.index]
+    # Number of students
+    numStudents = df[averages.index].notna().sum()
 
     averagesDict = {
         "Asignatura": averages.index.tolist(),
@@ -55,6 +57,7 @@ if __name__ == "__main__":
         "Moda": [format_number(x) for x in modes.values.tolist()],
         "Máximo": [format_number(x) for x in max.values.tolist()],
         "Mínimo": [format_number(x) for x in min.values.tolist()],
+        "Número de alumnos": [format_number(x) for x in numStudents.tolist()],
     }
 
     mainMarkdown.append(premade["statistics"])
