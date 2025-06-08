@@ -68,6 +68,10 @@ if __name__ == "__main__":
     plotting.createProbabilityDistributionPlot(df)
     mainMarkdown.append(premade["distributions"])
 
+    # Normal distribution plot
+    plotting.createNormalDistributionPlot(df)
+    mainMarkdown.append(premade["normalDistributions"])
+
     # Schulze method
     mainMarkdown.append(premade["schulze"])
     mainMarkdown.append(markdownFunctions.markdownTable(voting.schulze(df)))
