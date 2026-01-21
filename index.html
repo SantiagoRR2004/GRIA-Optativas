@@ -3,18 +3,28 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Asignaturas optativas del Grado en Inteligencia Artificial</title>
+    <title>Optativas</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
     <style>
-        body {
+        h1,
+        h2,
+        p {
             max-width: 900px;
-            margin: 2em auto;
+            margin: 1em auto;
         }
+
         img {
             max-width: 100%;
             height: auto;
             display: block;
             margin: 1em auto;
+        }
+
+        table {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
         }
     </style>
 </head>
@@ -25,9 +35,21 @@
         fetch('README.md')
             .then(response => response.text())
             .then(text => {
+                // Remove all <img width="1000"><br> from the markdown content
+                text = text.replace(/<img width="1000"><br>/g, '');
+
                 document.getElementById('content').innerHTML = marked.parse(text);
             });
     </script>
 </body>
+
+<script>
+    const currentUrl = window.location.href;
+    const urlParts = new URL(currentUrl);
+    const username = urlParts.hostname.split(".")[0];
+    const script = document.createElement("script");
+    script.src = `https://${username}.github.io/scripts/tableFunctions.js`;
+    document.head.appendChild(script);
+</script>
 
 </html>
