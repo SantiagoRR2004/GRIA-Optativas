@@ -19,8 +19,8 @@ if __name__ == "__main__":
 
     df = pd.read_csv(csv_url)
 
-    # Remove the column called Marca temporal
-    df = df.drop(columns=["Marca temporal"])
+    # Remove the column called Marca temporal and Original Timestamp
+    df = df.drop(columns=["Marca temporal", "Original Timestamp"])
 
     # Load the different premade Markdown parts
     premade = markdownFunctions.loadMarkdownParts()

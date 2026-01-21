@@ -27,6 +27,14 @@ def schulze(data: pd.DataFrame) -> Dict[str, List]:
             the subjects in order of preference.
     """
     data = copy.deepcopy(data)
+
+    # Do not calculate for subjects with no votes
+    noSubjects = [
+        sub for sub in data.columns.tolist() if data[sub].dropna().shape[0] == 0
+    ]
+    noSubjects.sort()
+    data.drop(columns=noSubjects, inplace=True)
+
     averages = list(data.mean().round(2).sort_values(ascending=False).index)
     subjects = data.columns.tolist()
     ranking = []
@@ -51,6 +59,8 @@ def schulze(data: pd.DataFrame) -> Dict[str, List]:
         winner = getCondorcetWinner(strength, averages)
         ranking.append(winner)
         data.drop(columns=winner, inplace=True)
+
+    ranking.extend(noSubjects)
 
     return {"Asignatura": ranking}
 

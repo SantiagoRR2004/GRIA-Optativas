@@ -27,19 +27,26 @@ def createProbabilityDistributionPlot(df: pd.DataFrame) -> None:
     for col in df.columns:
         data = df[col].dropna().values
 
-        # Compute KDE
-        kde = gaussian_kde(data)
+        if data.size != 0:
 
-        pdf = kde(x)
+            # If 1 point, stdDev = 1
+            if len(data) == 1:
+                pdf = norm.pdf(x, data[0], 1)
 
-        # Zero outside [0, 10]
-        pdf[(x < 0) | (x > 10)] = 0
+            else:
+                # Compute KDE
+                kde = gaussian_kde(data)
 
-        # Renormalize so the integral over [0, 10] equals 1
-        area = simpson(pdf, x)
-        pdf /= area
+                pdf = kde(x)
 
-        plt.plot(x, pdf, label=col)
+            # Zero outside [0, 10]
+            pdf[(x < 0) | (x > 10)] = 0
+
+            # Renormalize so the integral over [0, 10] equals 1
+            area = simpson(pdf, x)
+            pdf /= area
+
+            plt.plot(x, pdf, label=col)
 
     plt.ylim(bottom=0)
     plt.xlim(0, 10)
@@ -75,16 +82,24 @@ def createNormalDistributionPlot(df: pd.DataFrame) -> None:
         mean = df[subject].mean()
         stdDev = df[subject].std()
 
-        y = norm.pdf(x, loc=mean, scale=stdDev)
+        nValues = df[subject].dropna().shape[0]
 
-        # Add a mask
-        mask = y >= 0.001
+        if nValues != 0:
 
-        plt.plot(x[mask], y[mask], label=subject)
+            # Not enough data to compute stdDev
+            if nValues == 1:
+                stdDev = 1
 
-        # Calculate the right and left bounds
-        leftBound = min(leftBound, x[mask][0])
-        rightBound = max(rightBound, x[mask][-1])
+            y = norm.pdf(x, loc=mean, scale=stdDev)
+
+            # Add a mask
+            mask = y >= 0.001
+
+            plt.plot(x[mask], y[mask], label=subject)
+
+            # Calculate the right and left bounds
+            leftBound = min(leftBound, x[mask][0])
+            rightBound = max(rightBound, x[mask][-1])
 
     plt.ylim(bottom=0)
     plt.xlim(leftBound, rightBound)
