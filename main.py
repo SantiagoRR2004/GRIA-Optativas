@@ -78,7 +78,7 @@ def main(df: pd.DataFrame) -> str:
     mainMarkdown.append(premade["schulze"])
     mainMarkdown.append(markdownFunctions.markdownTable(voting.schulze(df)))
 
-    return "\n".join(mainMarkdown) + "\n"
+    return "\n".join(mainMarkdown)
 
 
 if __name__ == "__main__":
@@ -87,8 +87,28 @@ if __name__ == "__main__":
 
     df = pd.read_csv(csv_url)
 
-    # Remove the column called Marca temporal and Original Timestamp
-    df = df.drop(columns=["Marca temporal", "Original Timestamp"])
+    # Remove the column called Marca temporal
+    df = df.drop(columns=["Marca temporal"])
+
+    # Divide the rows by year of the Original Timestamp
+    df["Original Timestamp"] = pd.to_datetime(df["Original Timestamp"])
+    year = {
+        y: df[df["Original Timestamp"].dt.year == y].drop(
+            columns=["Original Timestamp"]
+        )
+        for y in df["Original Timestamp"].dt.year.unique()
+    }
+
+    # Generate a README for each year
+    for y, d in year.items():
+        mainMarkdown = main(d)
+
+        # Save the Markdown to a file
+        with open(f"README{y}.md", "w") as f:
+            f.write(mainMarkdown)
+
+    # Remove the Original Timestamp column
+    df = df.drop(columns=["Original Timestamp"])
 
     mainMarkdown = main(df)
 
