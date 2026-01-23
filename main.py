@@ -14,20 +14,21 @@ def format_number(x: float) -> float:
         return x
 
 
-def main(df: pd.DataFrame) -> str:
+def main(df: pd.DataFrame, year: str = "") -> str:
     """
     Main function to process the DataFrame and generate the Markdown text.
 
     Args:
         - df (pd.DataFrame): The input DataFrame containing the data.
             Each column represents a subject.
+        - year (str): The year to use in the report.
 
     Returns:
         - str: The generated Markdown text.
     """
     # Load the different premade Markdown parts
     premade = markdownFunctions.loadMarkdownParts()
-    mainMarkdown = [premade["beginning"]]
+    mainMarkdown = [premade["beginning"].replace("{year}", f" {year}")]
 
     # Average the values in each column
     averages = df.mean().round(2)
@@ -68,12 +69,18 @@ def main(df: pd.DataFrame) -> str:
     mainMarkdown.append(markdownFunctions.markdownTable(averagesDict))
 
     # Probability distribution plot
-    plotting.createProbabilityDistributionPlot(df)
-    mainMarkdown.append(premade["distributions"])
+    plotting.createProbabilityDistributionPlot(df, year=year)
+    distribution = premade["distributions"].replace("{year}", year)
+    if year:
+        distribution = distribution.replace("./docs/", "./")
+    mainMarkdown.append(distribution)
 
     # Normal distribution plot
-    plotting.createNormalDistributionPlot(df)
-    mainMarkdown.append(premade["normalDistributions"])
+    plotting.createNormalDistributionPlot(df, year=year)
+    normalDistribution = premade["normalDistributions"].replace("{year}", year)
+    if year:
+        normalDistribution = normalDistribution.replace("./docs/", "./")
+    mainMarkdown.append(normalDistribution)
 
     # Schulze method
     mainMarkdown.append(premade["schulze"])
@@ -95,7 +102,7 @@ if __name__ == "__main__":
     df = df.drop(columns=["Marca temporal"])
 
     # Divide the rows by year of the Original Timestamp
-    df["Original Timestamp"] = pd.to_datetime(df["Original Timestamp"])
+    df["Original Timestamp"] = pd.to_datetime(df["Original Timestamp"], dayfirst=True)
     year = {
         y: df[df["Original Timestamp"].dt.year == y].drop(
             columns=["Original Timestamp"]
@@ -105,7 +112,7 @@ if __name__ == "__main__":
 
     # Generate a README for each year
     for y, d in year.items():
-        mainMarkdown = main(d)
+        mainMarkdown = main(d, year=str(y))
 
         # Save the Markdown to a file
         with open(os.path.join(docsDirectory, f"README{y}.md"), "w") as f:

@@ -2,4 +2,4 @@
 
 Estas son las distribuciones normales usando la media y desviación típica de cada asignatura.
 
-![Image](./images/normalDistributions.png)
+![Image](./docs/normalDistributions{year}.png)

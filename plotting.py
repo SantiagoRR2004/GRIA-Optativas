@@ -6,13 +6,14 @@ import pandas as pd
 import os
 
 
-def createProbabilityDistributionPlot(df: pd.DataFrame) -> None:
+def createProbabilityDistributionPlot(df: pd.DataFrame, year: str = "") -> None:
     """
     Create a probability distribution plot for each column in the DataFrame.
     Each column should contain numerical data representing grades.
 
     Args:
         - df (pd.DataFrame): DataFrame containing grades for different subjects.
+        - year (str): The year to use in the image filename.
 
     Returns:
         - None.
@@ -54,17 +55,20 @@ def createProbabilityDistributionPlot(df: pd.DataFrame) -> None:
     plt.xlabel("Nota")
     plt.ylabel("Densidad de probabilidad")
     plt.savefig(
-        os.path.join(imagesDirectory, "distributions.png"), dpi=300, bbox_inches="tight"
+        os.path.join(imagesDirectory, f"distributions{year}.png"),
+        dpi=300,
+        bbox_inches="tight",
     )
     plt.close()
 
 
-def createNormalDistributionPlot(df: pd.DataFrame) -> None:
+def createNormalDistributionPlot(df: pd.DataFrame, year: str = "") -> None:
     """
     Create a normal distribution plot based on the averages and standard deviations.
 
     Args:
         - df (pd.DataFrame): DataFrame containing grades for different subjects.
+        - year (str): The year to use in the image filename.
 
     Returns:
         - None.
@@ -107,7 +111,7 @@ def createNormalDistributionPlot(df: pd.DataFrame) -> None:
     plt.xlabel("Nota")
     plt.ylabel("Densidad de probabilidad")
     plt.savefig(
-        os.path.join(imagesDirectory, "normalDistributions.png"),
+        os.path.join(imagesDirectory, f"normalDistributions{year}.png"),
         dpi=300,
         bbox_inches="tight",
     )
