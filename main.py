@@ -2,6 +2,7 @@ import pandas as pd
 import markdownFunctions
 import plotting
 import voting
+import os
 
 
 def format_number(x: float) -> float:
@@ -82,6 +83,9 @@ def main(df: pd.DataFrame) -> str:
 
 
 if __name__ == "__main__":
+    currentDirectory = os.path.dirname(os.path.abspath(__file__))
+    docsDirectory = os.path.join(currentDirectory, "docs")
+    os.makedirs(docsDirectory, exist_ok=True)
 
     csv_url = "https://docs.google.com/spreadsheets/d/1WvO5IBgJ3F6b6zHFQD5eWSxN-IUe3ONEvazHEUGb3Qo/export?format=csv"
 
@@ -104,7 +108,7 @@ if __name__ == "__main__":
         mainMarkdown = main(d)
 
         # Save the Markdown to a file
-        with open(f"README{y}.md", "w") as f:
+        with open(os.path.join(docsDirectory, f"README{y}.md"), "w") as f:
             f.write(mainMarkdown)
 
     # Remove the Original Timestamp column

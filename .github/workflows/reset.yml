@@ -19,15 +19,15 @@ jobs:
           LATEST_VERSION=$(curl -s https://repo1.maven.org/maven2/com/madgag/bfg/maven-metadata.xml | grep '<latest>' | sed -E 's/.*<latest>(.*)<\/latest>.*/\1/')
           curl -L "https://repo1.maven.org/maven2/com/madgag/bfg/${LATEST_VERSION}/bfg-${LATEST_VERSION}.jar" -o bfg.jar
 
-      - name: Remove README.md history
+      - name: Remove .md history
         run: |
-          java -jar bfg.jar --delete-files README.md
+          java -jar bfg.jar --delete-files *.md
           git reflog expire --expire=now --all
           git gc --prune=now --aggressive
 
       - name: Remove images history
         run: |
-          java -jar bfg.jar --delete-folders images
+          java -jar bfg.jar --delete-folders *.png
           git reflog expire --expire=now --all
           git gc --prune=now --aggressive
 

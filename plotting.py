@@ -18,7 +18,7 @@ def createProbabilityDistributionPlot(df: pd.DataFrame) -> None:
         - None.
     """
     currentDirectory = os.path.dirname(os.path.abspath(__file__))
-    imagesDirectory = os.path.join(currentDirectory, "images")
+    imagesDirectory = os.path.join(currentDirectory, "docs")
     os.makedirs(imagesDirectory, exist_ok=True)
 
     x = np.linspace(0, 10, 1000)
@@ -70,7 +70,7 @@ def createNormalDistributionPlot(df: pd.DataFrame) -> None:
         - None.
     """
     currentDirectory = os.path.dirname(os.path.abspath(__file__))
-    imagesDirectory = os.path.join(currentDirectory, "images")
+    imagesDirectory = os.path.join(currentDirectory, "docs")
     os.makedirs(imagesDirectory, exist_ok=True)
 
     x = np.linspace(-100, 100, 10000)
