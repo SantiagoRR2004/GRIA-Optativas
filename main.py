@@ -13,15 +13,17 @@ def format_number(x: float) -> float:
         return x
 
 
-if __name__ == "__main__":
+def main(df: pd.DataFrame) -> str:
+    """
+    Main function to process the DataFrame and generate the Markdown text.
 
-    csv_url = "https://docs.google.com/spreadsheets/d/1WvO5IBgJ3F6b6zHFQD5eWSxN-IUe3ONEvazHEUGb3Qo/export?format=csv"
+    Args:
+        - df (pd.DataFrame): The input DataFrame containing the data.
+            Each column represents a subject.
 
-    df = pd.read_csv(csv_url)
-
-    # Remove the column called Marca temporal and Original Timestamp
-    df = df.drop(columns=["Marca temporal", "Original Timestamp"])
-
+    Returns:
+        - str: The generated Markdown text.
+    """
     # Load the different premade Markdown parts
     premade = markdownFunctions.loadMarkdownParts()
     mainMarkdown = [premade["beginning"]]
@@ -76,6 +78,20 @@ if __name__ == "__main__":
     mainMarkdown.append(premade["schulze"])
     mainMarkdown.append(markdownFunctions.markdownTable(voting.schulze(df)))
 
+    return "\n".join(mainMarkdown) + "\n"
+
+
+if __name__ == "__main__":
+
+    csv_url = "https://docs.google.com/spreadsheets/d/1WvO5IBgJ3F6b6zHFQD5eWSxN-IUe3ONEvazHEUGb3Qo/export?format=csv"
+
+    df = pd.read_csv(csv_url)
+
+    # Remove the column called Marca temporal and Original Timestamp
+    df = df.drop(columns=["Marca temporal", "Original Timestamp"])
+
+    mainMarkdown = main(df)
+
     # Save the Markdown to a file
     with open("README.md", "w") as f:
-        f.write("\n".join(mainMarkdown) + "\n")
+        f.write(mainMarkdown)
