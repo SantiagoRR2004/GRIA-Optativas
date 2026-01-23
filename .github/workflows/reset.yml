@@ -21,13 +21,13 @@ jobs:
 
       - name: Remove .md history
         run: |
-          java -jar bfg.jar --delete-files *.md
+          java -jar bfg.jar --delete-files 'README*.md'
           git reflog expire --expire=now --all
           git gc --prune=now --aggressive
 
       - name: Remove images history
         run: |
-          java -jar bfg.jar --delete-folders *.png
+          java -jar bfg.jar --delete-files '*.png'
           git reflog expire --expire=now --all
           git gc --prune=now --aggressive
 
