@@ -110,6 +110,9 @@ if __name__ == "__main__":
         for y in df["Original Timestamp"].dt.year.unique()
     }
 
+    # Sort the years in descending order
+    year = dict(sorted(year.items(), reverse=True))
+
     # Generate a README for each year
     for y, d in year.items():
         mainMarkdown = main(d, year=str(y))
@@ -122,6 +125,11 @@ if __name__ == "__main__":
     df = df.drop(columns=["Original Timestamp"])
 
     mainMarkdown = main(df)
+
+    # Add urls to each yearly README
+    mainMarkdown += "\n## Informes por año\n"
+    for y in year.keys():
+        mainMarkdown += f"\n- ### [{y}](./docs/README{y}.md)\n"
 
     # Save the Markdown to a file
     with open("README.md", "w") as f:
