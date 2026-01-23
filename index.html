@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Optativas</title>
-    <base href="/">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <style>
@@ -36,13 +35,47 @@
     <div id="content"></div>
     <script>
         const contentEl = document.getElementById("content");
-        const defaultMd = "/README.md";
+        const defaultMd = "./README.md";
 
         const resolvePath = (href) => new URL(href, window.location.href).pathname;
 
-        const renderMarkdown = (text) => {
+        const renderMarkdown = (text, basePath) => {
             const cleaned = text.replace(/<img width="1000"><br>/g, "");
-            contentEl.innerHTML = marked.parse(cleaned);
+            const renderer = new marked.Renderer();
+            const originalImageRenderer = renderer.image.bind(renderer);
+            const originalLinkRenderer = renderer.link.bind(renderer);
+
+            // Support both legacy (href, title, text) and new ({ href, ... }) renderer signatures.
+            const resolveHref = (rawHref) => {
+                if (typeof rawHref !== "string" || rawHref.length === 0) return "";
+                if (rawHref.startsWith("http://") || rawHref.startsWith("https://") || rawHref.startsWith("/")) {
+                    return rawHref;
+                }
+                return new URL(rawHref, basePath || window.location.href).href;
+            };
+
+            const callRenderer = (rendererFn, token, fallbackArgs) => {
+                if (rendererFn.length >= 3) {
+                    return rendererFn(...fallbackArgs);
+                }
+                return rendererFn(token);
+            };
+
+            renderer.image = (tokenOrHref, title, text) => {
+                const token = typeof tokenOrHref === "string" ? { href: tokenOrHref, title, text } : (tokenOrHref || {});
+                const resolvedHref = resolveHref(token.href);
+                const nextToken = { ...token, href: resolvedHref };
+                return callRenderer(originalImageRenderer, nextToken, [resolvedHref, title, text]);
+            };
+
+            renderer.link = (tokenOrHref, title, text) => {
+                const token = typeof tokenOrHref === "string" ? { href: tokenOrHref, title, text } : (tokenOrHref || {});
+                const resolvedHref = resolveHref(token.href);
+                const nextToken = { ...token, href: resolvedHref };
+                return callRenderer(originalLinkRenderer, nextToken, [resolvedHref, title, text]);
+            };
+
+            contentEl.innerHTML = marked.parse(cleaned, { renderer });
         };
 
         const loadMarkdown = (path, { push } = { push: false }) => {
@@ -54,11 +87,9 @@
                     return response.text();
                 })
                 .then((text) => {
-                    renderMarkdown(text);
-
-                    // Update base tag to resolve relative URLs from markdown directory
-                    const dir = path.substring(0, path.lastIndexOf("/") + 1) || "/";
-                    document.querySelector("base").href = dir;
+                    const resolvedPath = new URL(path, window.location.href).href;
+                    const basePath = resolvedPath.substring(0, resolvedPath.lastIndexOf("/") + 1);
+                    renderMarkdown(text, basePath);
 
                     if (push) {
                         const newUrl = `${window.location.pathname}?md=${path}`;
@@ -78,11 +109,20 @@
             if (!anchor) return;
 
             const href = anchor.getAttribute("href");
-            if (!href || href.startsWith("http")) return;
-            if (!href.toLowerCase().endsWith(".md")) return;
+            if (!href) return;
+
+            // Check if it's an external link (different origin)
+            if (href.startsWith("http") && !href.startsWith(window.location.origin)) return;
+
+            // Extract the path from full URL or use as-is
+            let targetPath = href;
+            if (href.startsWith(window.location.origin)) {
+                targetPath = href.substring(window.location.origin.length);
+            }
+
+            if (!targetPath.toLowerCase().endsWith(".md")) return;
 
             event.preventDefault();
-            const targetPath = resolvePath(href);
             loadMarkdown(targetPath, { push: true });
         });
 
