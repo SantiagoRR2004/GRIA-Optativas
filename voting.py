@@ -48,9 +48,11 @@ def schulze(data: pd.DataFrame) -> Dict[str, List]:
         for i in range(len(columns)):
             for j in range(len(columns)):
                 if i != j:
-                    pairwise.iloc[i, j] /= (
-                        data[[columns[i], columns[j]]].notna().all(axis=1).sum()
-                    )
+                    voters = data[[columns[i], columns[j]]].notna().all(axis=1).sum()
+                    if voters > 0:
+                        pairwise.iloc[i, j] /= voters
+                    else:
+                        pairwise.iloc[i, j] = 0
 
         # Step 2: Compute strongest paths
         strength = strongestPath(pairwise)

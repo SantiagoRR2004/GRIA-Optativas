@@ -29,8 +29,8 @@ def createProbabilityDistributionPlot(df: pd.DataFrame) -> None:
 
         if data.size != 0:
 
-            # If 1 point, stdDev = 1
-            if len(data) == 1:
+            # If 1 point, stdDev = 1 or all points are the same
+            if len(data) == 1 or np.all(data == data[0]):
                 pdf = norm.pdf(x, data[0], 1)
 
             else:
@@ -87,7 +87,7 @@ def createNormalDistributionPlot(df: pd.DataFrame) -> None:
         if nValues != 0:
 
             # Not enough data to compute stdDev
-            if nValues == 1:
+            if nValues == 1 or stdDev == 0:
                 stdDev = 1
 
             y = norm.pdf(x, loc=mean, scale=stdDev)
