@@ -4,11 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Optativas</title>
+    <base href="/">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <style>
         h1,
         h2,
+        h3,
+        ul,
         p {
             max-width: 900px;
             margin: 1em auto;
@@ -32,14 +35,61 @@
 <body>
     <div id="content"></div>
     <script>
-        fetch('README.md')
-            .then(response => response.text())
-            .then(text => {
-                // Remove all <img width="1000"><br> from the markdown content
-                text = text.replace(/<img width="1000"><br>/g, '');
+        const contentEl = document.getElementById("content");
+        const defaultMd = "/README.md";
 
-                document.getElementById('content').innerHTML = marked.parse(text);
-            });
+        const resolvePath = (href) => new URL(href, window.location.href).pathname;
+
+        const renderMarkdown = (text) => {
+            const cleaned = text.replace(/<img width="1000"><br>/g, "");
+            contentEl.innerHTML = marked.parse(cleaned);
+        };
+
+        const loadMarkdown = (path, { push } = { push: false }) => {
+            fetch(path)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`No se pudo cargar ${path}`);
+                    }
+                    return response.text();
+                })
+                .then((text) => {
+                    renderMarkdown(text);
+
+                    // Update base tag to resolve relative URLs from markdown directory
+                    const dir = path.substring(0, path.lastIndexOf("/") + 1) || "/";
+                    document.querySelector("base").href = dir;
+
+                    if (push) {
+                        const newUrl = `${window.location.pathname}?md=${path}`;
+                        history.pushState({ md: path }, "", newUrl);
+                    }
+                })
+                .catch((error) => {
+                    contentEl.innerHTML = `<p>${error.message}</p>`;
+                });
+        };
+
+        const initialMd = new URLSearchParams(window.location.search).get("md") || defaultMd;
+        loadMarkdown(initialMd);
+
+        contentEl.addEventListener("click", (event) => {
+            const anchor = event.target.closest("a");
+            if (!anchor) return;
+
+            const href = anchor.getAttribute("href");
+            if (!href || href.startsWith("http")) return;
+            if (!href.toLowerCase().endsWith(".md")) return;
+
+            event.preventDefault();
+            const targetPath = resolvePath(href);
+            loadMarkdown(targetPath, { push: true });
+        });
+
+        window.addEventListener("popstate", (event) => {
+            const md = event.state?.md || new URLSearchParams(window.location.search).get("md") || defaultMd;
+            loadMarkdown(md);
+        });
     </script>
 </body>
 
