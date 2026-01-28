@@ -2,6 +2,9 @@ name: Run main.py
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 0 31 1 *" # At 00:00 on January 31st
+    - cron: "0 0 30 6 *" # At 00:00 on June 30th
 
 permissions:
   contents: write
