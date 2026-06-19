@@ -9,22 +9,26 @@ Estas son distintas métricas para todas las asignaturas, ordenadas por su media
 | <img width="1000"><br><p align="center">Asignatura  | <img width="1000"><br><p align="center">Media  | <img width="1000"><br><p align="center">Desviación típica  | <img width="1000"><br><p align="center">Mediana  | <img width="1000"><br><p align="center">Moda  | <img width="1000"><br><p align="center">Máximo  | <img width="1000"><br><p align="center">Mínimo  | <img width="1000"><br><p align="center">Número de alumnos |
 |:--|:--:|:--:|:--:|:--:|:--:|:--:|--:|
 | Interfaces Inteligentes  | 9.67  | 0.58  | 10  | 10  | 10  | 9  | 3 |
-| Visión Artificial  | 8.27  | 0.92  | 8  | 8  | 9.9  | 7  | 7 |
-| Técnicas de Procedimiento Masivo de Datos  | 8.16  | 0.72  | 8  | 8  | 10  | 7  | 16 |
-| Bases de Datos NoSQL  | 7.99  | 0.92  | 8  | 8  | 10  | 6  | 17 |
-| Aprendizaje Automático Bio-inspirado  | 7.91  | 2  | 9  | 9  | 10  | 4  | 15 |
-| Dimensión Ética y Jurídica de la IA  | 7.81  | 1.26  | 8  | 8  | 10  | 5  | 15 |
+| Minería de Textos  | 9.29  | 0.66  | 9.5  | 8.3  | 10  | 8.3  | 5 |
+| Robótica basada en el Comportamiento  | 8.5  | nan  | 8.5  | 8.5  | 8.5  | 8.5  | 1 |
+| Visión Artificial  | 8.43  | 0.88  | 8  | 8  | 9.9  | 7  | 10 |
+| IA en el ámbito Sanitario  | 8.33  | 2.89  | 10  | 10  | 10  | 5  | 3 |
+| Técnicas de Procedimiento Masivo de Datos  | 8.27  | 0.75  | 8  | 8  | 10  | 7  | 18 |
+| Aprendizaje Automático Bio-inspirado  | 8.11  | 1.95  | 9  | 10  | 10  | 4  | 17 |
+| Bases de Datos NoSQL  | 8.11  | 0.94  | 8  | 8  | 10  | 6  | 19 |
+| Dimensión Ética y Jurídica de la IA  | 7.86  | 1.3  | 8  | 8  | 10  | 5  | 18 |
 | Ciberseguridad Inteligente  | 7.73  | 0.97  | 7  | 7  | 9.1  | 7  | 7 |
-| Sistemas Expertos  | 7.61  | 1.16  | 8  | 8  | 9  | 5  | 17 |
-| Procesamiento del Lenguaje Natural  | 7.6  | 1.35  | 7  | 7  | 10  | 6  | 10 |
-| Aprendizaje Automático I  | 7.3  | 1.19  | 7.25  | 8  | 9.6  | 5  | 18 |
-| Sistemas Reactivos  | 6.99  | 2.12  | 7.15  | 6  | 10  | 3  | 16 |
-| Recuperación de la Información  | 6.23  | 1.86  | 7  | 7  | 8  | 3  | 11 |
-| Razonamiento con Incertidumbre  | 5.54  | 2.53  | 6.1  | 7  | 9  | 0  | 18 |
-| Web Semántica  | 5.33  | 2.45  | 6  | 7  | 8  | 1  | 9 |
-| Plataforma de Internet de las Cosas  | 2.73  | 2.06  | 3  | 3  | 6.5  | 0  | 15 |
-| Aprendizaje Automático II  | 2.19  | 2.42  | 2  | 0  | 9  | 0  | 17 |
-| Sistemas basados en Agentes  | 1.2  | 1.4  | 1  | 0  | 4  | 0  | 10 |
+| Procesamiento del Lenguaje Natural  | 7.71  | 1.25  | 7  | 7  | 10  | 6  | 13 |
+| Sistemas Expertos  | 7.55  | 1.11  | 8  | 8  | 9  | 5  | 19 |
+| Aprendizaje Automático I  | 7.28  | 1.13  | 7.16  | 7  | 9.6  | 5  | 20 |
+| Sistemas Reactivos  | 6.96  | 1.99  | 7  | 6  | 10  | 3  | 18 |
+| Recuperación de la Información  | 6.21  | 1.68  | 6.85  | 7  | 8  | 3  | 14 |
+| Razonamiento con Incertidumbre  | 5.77  | 2.5  | 6.6  | 7  | 9  | 0  | 20 |
+| Web Semántica  | 5.57  | 2.18  | 6.4  | 7  | 8  | 1  | 12 |
+| Plataforma de Internet de las Cosas  | 2.78  | 1.93  | 3  | 3  | 6.5  | 0  | 17 |
+| Aprendizaje Automático II  | 2.19  | 2.28  | 2  | 0  | 9  | 0  | 19 |
+| Sistemas basados en Agentes  | 1.12  | 1.26  | 1  | 0  | 4  | 0  | 13 |
+| IA en el ámbito Empresarial y Administrativo  | nan  | nan  | nan  | nan  | nan  | nan  | 0 |
 
 ## Distribuciones de probabilidad
 
@@ -45,23 +49,29 @@ Para el método Schulze se necesita un ranking de cada votante para todas las op
 | <img width="1000"><br><p align="center">Asignatura |
 |:--:|
 | Interfaces Inteligentes |
+| IA en el ámbito Sanitario |
 | Aprendizaje Automático Bio-inspirado |
+| Robótica basada en el Comportamiento |
+| Minería de Textos |
 | Técnicas de Procedimiento Masivo de Datos |
 | Bases de Datos NoSQL |
 | Visión Artificial |
+| Ciberseguridad Inteligente |
 | Dimensión Ética y Jurídica de la IA |
 | Sistemas Expertos |
-| Ciberseguridad Inteligente |
 | Procesamiento del Lenguaje Natural |
 | Aprendizaje Automático I |
 | Sistemas Reactivos |
-| Recuperación de la Información |
 | Razonamiento con Incertidumbre |
+| Recuperación de la Información |
 | Web Semántica |
 | Plataforma de Internet de las Cosas |
 | Aprendizaje Automático II |
 | Sistemas basados en Agentes |
+| IA en el ámbito Empresarial y Administrativo |
 
 ## Informes por año
+
+- ### [2026](./docs/README2026.md)
 
 - ### [2025](./docs/README2025.md)
